@@ -8,9 +8,6 @@ import play.api.mvc._
 
 object Application extends Controller with Secured{
   
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
-  }
 
   def check(mail: String, password: String) = mail == "tony@stark.com" && password == "ironman"
 
