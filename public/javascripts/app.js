@@ -23,7 +23,7 @@ angular.module("angularAuth",['authServiceProvider']).
 angular.module('authServiceProvider', []).
     config(['$httpProvider', function($httpProvider) {
 
-    var interceptor = ['$q','$rootScope','$log', function($q,$rootScope,$log) {
+    $httpProvider.responseInterceptors.push(function($q,$rootScope,$log){
         function success(response) {
 //            $log.info(response)
             return response
@@ -41,6 +41,6 @@ angular.module('authServiceProvider', []).
             return promise.then(success, error)
         }
 
-    }];
-    $httpProvider.responseInterceptors.push(interceptor)
+    })
+
 }])
