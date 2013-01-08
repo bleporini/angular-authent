@@ -5,8 +5,6 @@
  */
 "use strict";
 
-function LoginEvent(){}
-
 angular.module("angularAuth",['authServiceProvider']).
     config(['$routeProvider',function($routeProvider){
         $routeProvider.
@@ -16,7 +14,7 @@ angular.module("angularAuth",['authServiceProvider']).
     }]).
     directive('authenticator',function($location){
         return function(scope, elem, attrs){
-            scope.$on(LoginEvent,function(){
+            scope.$on('event:auth-loginRequired',function(){
                 $location.path("/login")
             })
         }
@@ -25,7 +23,7 @@ angular.module("angularAuth",['authServiceProvider']).
 angular.module('authServiceProvider', []).
     config(['$httpProvider', function($httpProvider) {
 
-    var interceptor = [function($q,$rootScope,$log) {
+    var interceptor = ['$q','$rootScope','$log', function($q,$rootScope,$log) {
         function success(response) {
 //            $log.info(response)
             return response
@@ -34,7 +32,7 @@ angular.module('authServiceProvider', []).
         function error(response) {
             if (response.status === 401) {
                 $log.error("401!!!!")
-                $rootScope.$broadcast(LoginEvent)
+                $rootScope.$broadcast('event:auth-loginRequired')
             }
             return $q.reject(response)
         }
